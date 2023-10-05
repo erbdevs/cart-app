@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   root "products#index"
 
   get 'products', to: 'products#index'
-  get 'cart', to: 'carts#show'
+
+  resource :cart, only: [:show, :destroy]
 
   resources :cart_items
 end
