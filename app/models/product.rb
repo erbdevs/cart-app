@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  has_many :cart_items
+
   validates :code, :name, :price, presence: true
 
   validates :name, length: { minimum: 3 }
