@@ -1,11 +1,7 @@
 class Cart < ApplicationRecord
   has_many :cart_items, dependent: :destroy
 
-  def subtotal
-    10
-  end
-
   def total
-    100
+    cart_items.includes(:product).sum(&:subtotal).round(2)
   end
 end
