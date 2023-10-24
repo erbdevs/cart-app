@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_05_181708) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_17_190605) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_05_181708) do
     t.datetime "updated_at", null: false
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
     t.index ["product_id"], name: "index_cart_items_on_product_id"
+  end
+
+  create_table "cart_promotions", force: :cascade do |t|
+    t.bigint "cart_id", null: false
+    t.bigint "promotion_id", null: false
+    t.float "value", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cart_id"], name: "index_cart_promotions_on_cart_id"
+    t.index ["promotion_id"], name: "index_cart_promotions_on_promotion_id"
   end
 
   create_table "carts", force: :cascade do |t|
@@ -37,6 +47,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_05_181708) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "promotions", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.string "name", null: false
+    t.string "description", null: false
+    t.integer "min_quantity", default: 1, null: false
+    t.integer "bulk_quantity", default: 1, null: false
+    t.float "percentage", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_promotions_on_product_id"
+  end
+
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"
+  add_foreign_key "cart_promotions", "carts"
+  add_foreign_key "cart_promotions", "promotions"
+  add_foreign_key "promotions", "products"
 end
