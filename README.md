@@ -1,24 +1,14 @@
-# README
+# Summary
+This little application allows you to simulate the process of adding products into a cart in an e-commerce.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+It has the possibility to add discounts to the products that will affect the final price of the cart.
 
-Things you may want to cover:
+# Running the app
+1. Install proper `rails` and `ruby` versions (see Gemfile)
+2. Install postgres
+3. Run `bundle` to install the gems
+4. Setup the database `rails db:setup`
+5. Create some data with the seeds: `rails db:seed`
+6. Start the server `rails s`
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+At this point, you should see a list of products that can be added to the cart.
