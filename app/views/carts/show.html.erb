@@ -1,13 +1,24 @@
 <h1>Cart#show</h1>
 
+<h2>Products</h2>
 <% @cart_items.each do |cart_item|%>
-  <h2><%= cart_item.product.name %></h2>
+  <h3><%= cart_item.product.name %></h3>
   <p>Code: <%= cart_item.product.code%> </p>
   <p>Price: <%= cart_item.product.price%> </p>
   <%= form_with model: cart_item, url: cart_item_path(cart_item.id), method: :put do |f| %>
     <%= f.hidden_field :product_id, value: cart_item.product.id %>
     <%= f.number_field :quantity, value: cart_item.quantity, min: 1 %>
     <%= f.submit "Update amount" %>
+  <% end %>
+  <p>Subtotal: <%= cart_item.subtotal %> </p>
+<% end %>
+
+<% unless @cart_promotions.empty? %>
+  <h2>Discounts</h2>
+  <% @cart_promotions.each do |cart_promotion|%>
+    <h3><%= cart_promotion.promotion.name %></h3>
+    <p><%= cart_promotion.promotion.description %> </p>
+    <p>Subtotal: -<%= cart_promotion.value.round(2) %> </p>
   <% end %>
 <% end %>
 

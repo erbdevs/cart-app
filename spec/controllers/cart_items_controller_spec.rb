@@ -13,6 +13,11 @@ RSpec.describe CartItemsController, type: :controller do
     it "creates a cart_item" do
       expect { post_request }.to change(CartItem, :count).by(+1)
     end
+
+    it "uses CartPromotionsCalculator" do
+      expect(Cart::CartPromotionsCalculator).to receive(:run).with(Cart)
+      post_request
+    end
   end
 
   describe "PUT update" do
@@ -29,6 +34,11 @@ RSpec.describe CartItemsController, type: :controller do
 
     it "creates a cart_item" do
       expect { put_request }.to change { cart_item.reload.quantity }.by(+1)
+    end
+
+    it "uses CartPromotionsCalculator" do
+      expect(Cart::CartPromotionsCalculator).to receive(:run).with(Cart)
+      put_request
     end
   end
 end
