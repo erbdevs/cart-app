@@ -16,6 +16,16 @@ class Cart
           cart_promotion.save
         end
       end
+
+      cart.cart_promotions.each do |cart_promotion|
+        cart_promotion.destroy if stale_cart_promotion?(cart_promotion)
+      end
+    end
+
+  private
+
+    def self.stale_cart_promotion?(cart_promotion)
+      !CartItem.exists?(cart_id: cart_promotion.cart_id, product_id: cart_promotion.promotion.product_id)
     end
   end
 end

@@ -63,6 +63,16 @@ class Cart
             expect(cart_discount.value).to eq(40.0)
           end
         end
+
+        context "and there is no cart_item for that cart_promotion" do
+          before do
+            create(:cart_promotion, cart: cart, promotion: Promotion.find_by(product_id: product.id), value: 2)
+          end
+
+          it do
+            expect { calculation }.to change { cart.reload.cart_promotions.size }.by(-1)
+          end
+        end
       end
     end
   end

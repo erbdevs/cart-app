@@ -13,6 +13,15 @@ class CartItemsController < ApplicationController
     redirect_to cart_path
   end
 
+  def destroy
+    @cart_item = current_cart.cart_items.find_by(product_id: cart_item_params[:product_id])
+    return unless @cart_item
+
+    @cart_item.destroy!
+    Cart::CartPromotionsCalculator.run(current_cart)
+    redirect_to cart_path
+  end
+
 private
 
   def cart_item_params

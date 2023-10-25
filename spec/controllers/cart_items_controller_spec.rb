@@ -41,5 +41,28 @@ RSpec.describe CartItemsController, type: :controller do
       put_request
     end
   end
+
+  describe "DELETE destroy" do
+    let(:cart) { create(:cart) }
+    let(:cart_item) { create(:cart_item, cart: cart, product_id: product.id, quantity: 1) }
+
+    before do
+      cart_item
+      allow_any_instance_of(ApplicationHelper).to receive(:current_cart).and_return(cart)
+    end
+
+    subject(:delete_request) do
+      put(:destroy, params: { id: cart_item.id, cart_item: { product_id: product.id, quantity: 1 } })
+    end
+
+    it "creates a cart_item" do
+      expect { delete_request }.to change { CartItem.count }.by(-1)
+    end
+
+    it "uses CartPromotionsCalculator" do
+      expect(Cart::CartPromotionsCalculator).to receive(:run).with(Cart)
+      delete_request
+    end
+  end
 end
 
