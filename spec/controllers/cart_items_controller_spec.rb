@@ -29,16 +29,43 @@ RSpec.describe CartItemsController, type: :controller do
     end
 
     subject(:put_request) do
-      put(:update, params: { id: cart_item.id, cart_item: { product_id: product.id, quantity: 2 } })
+      put(:update, params: { id: cart_item.id, cart_item: { product_id: product.id, quantity: new_quantity } })
     end
 
-    it "creates a cart_item" do
-      expect { put_request }.to change { cart_item.reload.quantity }.by(+1)
+    context "when the cart_item changed" do
+      let(:new_quantity) { 2 }
+
+      it "creates a cart_item" do
+        expect { put_request }.to change { cart_item.reload.quantity }.by(+1)
+      end
+
+      it "uses CartPromotionsCalculator" do
+        expect(Cart::CartPromotionsCalculator).to receive(:run).with(Cart)
+        put_request
+      end
+
+      it "redirects to cart_path" do
+        put_request
+        expect(response).to redirect_to(cart_path)
+      end
     end
 
-    it "uses CartPromotionsCalculator" do
-      expect(Cart::CartPromotionsCalculator).to receive(:run).with(Cart)
-      put_request
+    context "when the cart_item did not change" do
+      let(:new_quantity) { 1 }
+
+      it "creates a cart_item" do
+        expect { put_request }.not_to change { cart_item.reload.quantity }
+      end
+
+      it "uses CartPromotionsCalculator" do
+        expect(Cart::CartPromotionsCalculator).not_to receive(:run).with(Cart)
+        put_request
+      end
+
+      it "does not redirect to cart_path" do
+        put_request
+        expect(response).not_to redirect_to(cart_path)
+      end
     end
   end
 
@@ -62,6 +89,11 @@ RSpec.describe CartItemsController, type: :controller do
     it "uses CartPromotionsCalculator" do
       expect(Cart::CartPromotionsCalculator).to receive(:run).with(Cart)
       delete_request
+    end
+
+    it "redirects to cart_path" do
+      delete_request
+      expect(response).to redirect_to(cart_path)
     end
   end
 end

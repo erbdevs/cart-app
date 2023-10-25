@@ -8,9 +8,11 @@ class CartItemsController < ApplicationController
   def update
     @cart_item = current_cart.cart_items.find_by(product_id: cart_item_params[:product_id])
     @cart_item.quantity = cart_item_params[:quantity]
-    @cart_item.save!
-    Cart::CartPromotionsCalculator.run(current_cart)
-    redirect_to cart_path
+    if @cart_item.changed?
+      @cart_item.save!
+      Cart::CartPromotionsCalculator.run(current_cart)
+      redirect_to cart_path
+    end
   end
 
   def destroy
