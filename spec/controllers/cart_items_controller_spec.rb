@@ -10,13 +10,38 @@ RSpec.describe CartItemsController, type: :controller do
       )
     end
 
-    it "creates a cart_item" do
-      expect { post_request }.to change(CartItem, :count).by(+1)
+    context "when there is no an item for that product" do
+      it "creates a cart_item" do
+        expect { post_request }.to change(CartItem, :count).by(+1)
+      end
+
+      it "uses CartPromotionsCalculator" do
+        expect(Cart::CartPromotionsCalculator).to receive(:run).with(Cart)
+        post_request
+      end
     end
 
-    it "uses CartPromotionsCalculator" do
-      expect(Cart::CartPromotionsCalculator).to receive(:run).with(Cart)
-      post_request
+    context "when there is already an item for that product" do
+      let(:cart) { create(:cart) }
+      let(:cart_item) { create(:cart_item, cart: cart, product_id: product.id, quantity: 1) }
+
+      before do
+        allow_any_instance_of(ApplicationHelper).to receive(:current_cart).and_return(cart)
+      end
+
+      it "does not create another cart_item" do
+        cart_item
+        expect { post_request }.not_to change(CartItem, :count)
+      end
+
+      it "updates the cart_item quantity" do
+        expect { post_request }.to change { cart_item.reload.quantity }.by(+1)
+      end
+
+      it "uses CartPromotionsCalculator" do
+        expect(Cart::CartPromotionsCalculator).to receive(:run).with(Cart)
+        post_request
+      end
     end
   end
 
@@ -35,7 +60,7 @@ RSpec.describe CartItemsController, type: :controller do
     context "when the cart_item changed" do
       let(:new_quantity) { 2 }
 
-      it "creates a cart_item" do
+      it "updates the cart_item quantity" do
         expect { put_request }.to change { cart_item.reload.quantity }.by(+1)
       end
 
