@@ -11,6 +11,11 @@
   </head>
 
   <body>
+    <nav>
+      <%= link_to 'Products', products_path %>
+      <%= link_to 'Cart', cart_path %>
+    </nav>
+    <hr>
     <%= yield %>
   </body>
 </html>

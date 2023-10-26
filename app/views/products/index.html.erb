@@ -1,5 +1,5 @@
-<h1>Products#index</h1>
-
+<h1>Products</h1>
+<hr>
 <% @products.each do |product|%>
   <h2><%= product.name %></h2>
   <p>Code: <%= product.code%> </p>
@@ -10,7 +10,3 @@
     <%= f.submit "Add to Cart" %>
   <% end %>
 <% end %>
-
-<hr>
-
-<%= link_to 'Cart', cart_path %>
