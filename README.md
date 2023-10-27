@@ -32,19 +32,19 @@ The main fields for the Promotion model are:
 Lets add some examples. For them, we will asume that we have a Product coffee with a unitary price of 2€.
 
 ## Promotion simple
-percentage: 10.0%
-min_quantity: 3
+percentage: 10.0%  
+min_quantity: 3  
 bulk_quantity: 1
 
-If we buy 2 coffies, the unitary price of the coffee keeps being 2€. Total: 4€
+If we buy 2 coffies, the unitary price of the coffee keeps being 2€. Total: 4€  
 If we buy 3 coffies, the unitary price of the coffee is reduced by 10% to 1.8€. Total: 3.6€
 
 ## Promotion with bulk_quantity
-percentage: 10.0%
-min_quantity: 2
+percentage: 10.0%  
+min_quantity: 2  
 bulk_quantity: 2
 
-If we buy 1 coffies, the unitary price of the coffee keeps being 2€. Total: 2€
-If we buy 2 coffies, the unitary price of the coffee is reduced by 10% to 1.8€. Total: 3.6€
-If we buy 3 coffies, the unitary price of the coffee is reduced by 10% to 1.8€. However, it is only reduced in bulks of two. Total: 1.8 + 1.8 + 2
+If we buy 1 coffies, the unitary price of the coffee keeps being 2€. Total: 2€  
+If we buy 2 coffies, the unitary price of the coffee is reduced by 10% to 1.8€. Total: 3.6€  
+If we buy 3 coffies, the unitary price of the coffee is reduced by 10% to 1.8€. However, it is only reduced in bulks of two. Total: 1.8 + 1.8 + 2  
 If we buy 4 coffies, the unitary price of the coffee is reduced by 10% to 1.8€. Total: 1.8 + 1.8 + 1.8 + 1.8
